@@ -1,10 +1,17 @@
 
 module.exports = function(router, controllers) {
 
-  router.post('/subscriptions', controllers.subscriptions.create)
-  router.get('/subscriptions/:id', controllers.subscriptions.destroy)
-  router.delete('/subscriptions/:id', controllers.subscriptions.destroy)
-  router.post('/subscriptions/:id/payments', controllers.payments.create)
-  router.get('/subscriptions/:subscription_id/payments/:payment_id', controllers.payments.create)
+  router.post('/api/subscriptions', controllers.subscriptions.create)
+  router.get('/api/subscriptions/:uid', controllers.subscriptions.show)
+  router.delete('/api/subscriptions/:uid', controllers.subscriptions.destroy)
+  router.post('/api/subscriptions/:uid/payments', controllers.payments.create)
+  router.get('/api/subscriptions/:uid/payments/:id', controllers.payments.create)
+
+  router.get('/subscriptions/new', function(req, res) {
+    res.render('subscriptions/new')
+  })
+  router.get('/subscriptions/:id', function(req, res) {
+    res.render('subscriptions/show')
+  })
 }
 

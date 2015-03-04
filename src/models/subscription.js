@@ -1,36 +1,52 @@
-const uuid = require('uuid')
+const uuid   = require('uuid')
+const ripple = require('ripple-lib')
 
 var subscriptions = {}
 
 export default class Subscription {
 
-  constructor(uid, destination, amount, period, secret) {
+  constructor(uid, options) {
+    if (subscriptions[uid]) {
+      options = subscriptions[uid]
+    } else {
+      subscriptions[uid] = options
+    }
     this.uid         = uid
-    this.destination = destination
-    this.amount      = amount
-    this.period      = period
-    this.secret      = secret
+    this.destination = options.destination
+    this.amount      = options.amount
+    this.period      = options.period
+    this.secret      = options.secret
+    this.source      = new ripple.Wallet(options.secret).getAddress().value
+    this.start       = options.start
   }
 
   static find(uid) {
-    return new this(uid, subscriptions[uid])
+    if (subscriptions[uid]) { 
+      return new this(uid)
+    }
   }
 
-  static create(destination, amount, period, secret) {
+  static create(options) {
     let uid = uuid.v4()
-    subscriptions[uid] = options
-    let subscription = new this(uid, destination, amount, period, secret)
-    return subscription 
+
+    options.start = new Date().getTime()
+
+    return new this(uid, options)
   }
 
   toJSON() {
-    let json = {
-      uid: this.uid
+    return {
+      uid: this.uid,
+      destination: this.destination,
+      amount: this.amount,
+      period: this.period,
+      source: this.source,
+      start: this.start
     }
-    for (let key in this.data) {
-      json[key] = this.data[key]
-    }
-    return json
+  }
+
+  static destroy(uid) {
+    delete subscriptions[uid]
   }
 }
 

@@ -23,7 +23,8 @@ module.exports = function() {
         })
       } else {
         res.status(404).send({
-          success: false
+          success: false,
+          error: 'subscription not found'
         })
       }
     },

@@ -1,5 +1,6 @@
 
 module.exports = {
-  Subscription: require('./subscription')
+  Subscription: require('./subscription'),
+  Payment: require('./payment')
 }
 

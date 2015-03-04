@@ -30,7 +30,13 @@ the amount to debit each period, the credited account address and the secret
 of the debited account.
 
 ````
-POST /subscriptions
+POST /api/subscriptions
+
+curl -X POST 127.0.0.1:5000/api/subscriptions \
+-d secret=$RIPPLE_SECRET \
+-d destination=rsvnBPNfmG46KE3agvXvbDHW137cG66MGT \
+-d period=60000 \
+-d amount=1
 
 request:
 {
